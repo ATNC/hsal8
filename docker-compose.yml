@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  web:
+    build: ./app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app/static:/app/static
+
+  openresty:
+    build: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
+      - ./app/static:/app/static:ro
+    depends_on:
+      - web
+
+volumes:
+  static:
